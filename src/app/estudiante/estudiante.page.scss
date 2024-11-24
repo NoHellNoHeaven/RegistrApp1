@@ -1,0 +1,38 @@
+.student-dashboard {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .space-x-4 > * + * {
+    margin-left: 1rem;
+  }
+  
+  .text-xl {
+    font-size: 1.25rem;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  .text-gray-500 {
+    color: #6b7280;
+  }
+  
+  .capitalize {
+    text-transform: capitalize;
+  }
+  
+  .justify-center {
+    justify-content: center;
+  }
+  

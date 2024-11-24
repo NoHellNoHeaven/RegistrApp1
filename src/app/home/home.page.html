@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>RegistrAPP</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <h1 class="text-center">Inicia sesión en tu cuenta</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <ion-item>
+        <ion-label position="floating">Correo electrónico</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <ion-button expand="full" type="submit" [disabled]="!loginForm.valid">Iniciar sesión</ion-button>
+    </form>
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+    <div class="links">
+      <ion-router-link routerLink="/registrarse">Registrarse</ion-router-link>
+      <ion-router-link routerLink="/forgot-password">¿Olvidaste tu contraseña?</ion-router-link>
+    </div>
+  </div>
+</ion-content>
