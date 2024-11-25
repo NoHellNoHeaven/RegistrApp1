@@ -1,13 +1,33 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>profesor</ion-title>
+    <ion-title>Dashboard de Profesor</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profesor</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="student-dashboard">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Datos Personales</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="flex items-center space-x-4">
+        <ion-avatar class="h-20 w-20">
+          <img src="/assets/placeholder.svg" alt="{{ user?.name }} {{ user?.lastName }}" />
+        </ion-avatar>
+        <div>
+          <p class="text-xl font-semibold">{{ user?.name }} {{ user?.lastName }}</p>
+          <p class="text-gray-500">{{ user?.email }}</p>
+          <p class="text-gray-500 capitalize">{{ user?.role }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="generarQr">
+      <ion-router-link routerLink="/qr">generarQr</ion-router-link>
+    </div>
+
+    <div class="flex justify-center">
+      <ion-button expand="full" fill="outline" (click)="logout()">Cerrar Sesión</ion-button>
+    </div>
+  </div>
 </ion-content>
