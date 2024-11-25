@@ -5,18 +5,13 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div class="register-container">
-    <div class="header">
-      <ion-button fill="clear" (click)="goHome()" class="home-button">
-        <ion-icon name="arrow-back-outline"></ion-icon>
-      </ion-button>
-      <h1 class="text-center">Crea tu cuenta</h1>
-    </div>
-    <form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+  <div class="login-container">
+    <h1 class="text-center">Crea tu cuenta</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="registrarseForm">
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input type="text" formControlName="name"></ion-input>
-      </ion-item>
+      </ion-item> 
       <ion-item>
         <ion-label position="floating">Apellido</ion-label>
         <ion-input type="text" formControlName="lastName"></ion-input>
@@ -30,19 +25,39 @@
         <ion-input type="password" formControlName="password"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Rol</ion-label>
+        <ion-label>Rol</ion-label>
         <ion-select formControlName="role">
           <ion-select-option value="student">Estudiante</ion-select-option>
           <ion-select-option value="teacher">Profesor</ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-button expand="full" type="submit" [disabled]="!registerForm.valid">Registrarse</ion-button>
+      <div *ngIf="registrarseForm.get('role')?.value === 'teacher'">
+        <ion-item>
+          <ion-label position="floating">Curso</ion-label>
+          <ion-input formControlName="course"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Escuela</ion-label>
+          <ion-input formControlName="school"></ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="registrarseForm.get('role')?.value === 'student'">
+        <ion-item>
+          <ion-label position="floating">Carrer</ion-label>
+          <ion-input formControlName="carrer"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Sede</ion-label>
+          <ion-input formControlName="sede"></ion-input>
+        </ion-item>
+      </div>
+      <ion-button expand="full" type="submit" [disabled]="!registrarseForm.valid">Registrarse</ion-button>
     </form>
-    <div *ngIf="message" [ngClass]="{'success-message': isSuccess, 'error-message': !isSuccess}">
+    <div *ngIf="message" [class.success]="isSuccess" [class.error]="!isSuccess">
       {{ message }}
     </div>
     <div class="links">
-      <ion-router-link routerLink="/">¿Ya tienes una cuenta? Inicia sesión</ion-router-link>
+      <ion-router-link routerLink="/login">¿Ya tienes una cuenta? Inicia sesión</ion-router-link>
     </div>
   </div>
 </ion-content>

@@ -30,10 +30,12 @@ const routes: Routes = [
   {
     path: 'nueva-asistencia',
     loadChildren: () => import('./estudiante/nueva-asistencia/nueva-asistencia.module').then( m => m.NuevaAsistenciaPageModule)
-  },  {
+  },
+  {
     path: 'qr',
     loadChildren: () => import('./qr/qr.module').then( m => m.QrPageModule)
   },
+  
 
   
 
