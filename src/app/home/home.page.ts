@@ -6,8 +6,6 @@ interface User {
   email: string;
   password: string;
   role: 'student' | 'teacher';
-  course?: string;
-  school?: string;
 }
 
 @Component({
@@ -22,23 +20,7 @@ export class HomePage {
   constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['', [Validators.required]],
-      course: [''],
-      school: ['']
-    });
-
-    // Watch for changes on the 'role' field to show/hide additional fields
-    this.loginForm.get('role')?.valueChanges.subscribe(role => {
-      if (role === 'teacher') {
-        this.loginForm.get('course')?.setValidators([Validators.required]);
-        this.loginForm.get('school')?.setValidators([Validators.required]);
-      } else {
-        this.loginForm.get('course')?.clearValidators();
-        this.loginForm.get('school')?.clearValidators();
-      }
-      this.loginForm.get('course')?.updateValueAndValidity();
-      this.loginForm.get('school')?.updateValueAndValidity();
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
@@ -49,17 +31,13 @@ export class HomePage {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password, role, course, school } = this.loginForm.value;
+      const { email, password } = this.loginForm.value;
       const user = this.verifyUser(email, password);
       if (user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
-        if (role === 'student') {
+        if (user.role === 'student') {
           this.router.navigate(['/estudiante']);
-        } else if (role === 'teacher') {
-          // Save additional fields for teachers
-          user.course = course;
-          user.school = school;
-          localStorage.setItem('currentUser', JSON.stringify(user));
+        } else if (user.role === 'teacher') {
           this.router.navigate(['/profesor']);
         }
       } else {

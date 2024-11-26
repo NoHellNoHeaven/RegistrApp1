@@ -85,6 +85,7 @@ export class RegistrarsePage {
 
 
 
+
   goHome() {
     this.router.navigate(['/home']);
   }

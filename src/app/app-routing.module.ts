@@ -34,7 +34,11 @@ const routes: Routes = [
   {
     path: 'qr',
     loadChildren: () => import('./qr/qr.module').then( m => m.QrPageModule)
+  },  {
+    path: 'registro-asistencia',
+    loadChildren: () => import('./registro-asistencia/registro-asistencia.module').then( m => m.RegistroAsistenciaPageModule)
   },
+
   
 
   
