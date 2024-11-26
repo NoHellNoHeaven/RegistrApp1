@@ -49,7 +49,7 @@ export class NuevaAsistenciaPage {
       this.message = `Asistencia registrada para: ${student.name} ${student.lastName}`;
       this.showToast(this.message);
     } else {
-      this.message = 'Código QR no válido';
+      this.message = 'Código QR malo';
       this.showToast(this.message);
     }
 
