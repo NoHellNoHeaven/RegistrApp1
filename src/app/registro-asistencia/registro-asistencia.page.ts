@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-interface Student {
+interface User {
   id: string;
   name: string;
   lastName: string;
@@ -14,13 +14,13 @@ interface Student {
   styleUrls: ['./registro-asistencia.page.scss'],
 })
 export class RegistroAsistenciaPage implements OnInit {
-  student: Student[] = [];
+  users: User[] = [];
 
   ngOnInit() {
-    this.loadStudents();
+    this.loadUsers();
   }
 
-  loadStudents() {
-    this.student = JSON.parse(localStorage.getItem('students') || '[]');
+  loadUsers() {
+    this.users = JSON.parse(localStorage.getItem('users') || '[]');
   }
 }

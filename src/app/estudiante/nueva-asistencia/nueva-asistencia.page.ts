@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint } from '@capacitor/barcode-scanner';
 import { LoadingController, ToastController } from '@ionic/angular';
 
-interface Student {
+interface User {
   id: string;
   name: string;
   lastName: string;
@@ -16,7 +16,7 @@ interface Student {
   styleUrls: ['./nueva-asistencia.page.scss'],
 })
 export class NuevaAsistenciaPage {
-  student: Student[] = JSON.parse(localStorage.getItem('students') || '[]'); // Cargar estudiantes del local storage
+  users: User[] = JSON.parse(localStorage.getItem('users') || '[]'); // Cargar usuarios del local storage
   message: string = '';
 
   constructor(private loadingCtrl: LoadingController, private toastCtrl: ToastController) {}
@@ -41,15 +41,15 @@ export class NuevaAsistenciaPage {
       return;
     }
 
-    const studentId = qrCode.replace('BaseDeDatos', '');
-    const student = this.student.find(s => s.id === studentId);
-    if (student) {
-      student.present = true;
-      localStorage.setItem('students', JSON.stringify(this.student)); // Actualizar la lista de estudiantes en el local storage
-      this.message = `Asistencia registrada para: ${student.name} ${student.lastName}`;
+    const userId = qrCode.replace('BaseDeDatos', '');
+    const user = this.users.find(u => u.id === userId);
+    if (user) {
+      user.present = true;
+      localStorage.setItem('users', JSON.stringify(this.users)); // Actualizar la lista de usuarios en el local storage
+      this.message = `Asistencia registrada para: ${user.name} ${user.lastName}`;
       this.showToast(this.message);
     } else {
-      this.message = 'Código QR malo';
+      this.message = 'Código QR no válido';
       this.showToast(this.message);
     }
 
