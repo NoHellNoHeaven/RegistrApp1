@@ -5,6 +5,7 @@ import { LoadingController } from '@ionic/angular';
 interface Student {
   id: string;
   name: string;
+  lastName: string;
   email: string;
   present?: boolean; // Nueva propiedad para indicar asistencia
 }
@@ -34,11 +35,19 @@ export class NuevaAsistenciaPage {
     });
     loading.present();
 
-    const student = this.students.find(s => s.id === qrCode);
+    if (!qrCode.startsWith('BaseDeDatos')) {
+      this.message = 'Código QR no válido';
+      this.showToast(this.message);
+      loading.dismiss();
+      return;
+    }
+
+    const studentId = qrCode.replace('BaseDeDatos', '');
+    const student = this.students.find(s => s.id === studentId);
     if (student) {
       student.present = true;
       localStorage.setItem('students', JSON.stringify(this.students)); // Actualizar la lista de estudiantes en el local storage
-      this.message = `Asistencia registrada para: ${student.name}`;
+      this.message = `Asistencia registrada para: ${student.name} ${student.lastName}`;
       this.showToast(this.message);
     } else {
       this.message = 'Código QR no válido';

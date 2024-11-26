@@ -10,7 +10,7 @@
     <ion-list>
       <ion-item *ngFor="let student of students">
         <ion-label>
-          <h2>{{ student.name }}</h2>
+          <h2>{{ student.name }} {{ student.lastName }}</h2>
           <p>{{ student.email }}</p>
         </ion-label>
         <ion-icon *ngIf="student.present" name="checkmark-circle" slot="end" color="success"></ion-icon>

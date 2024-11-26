@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 interface Student {
   id: string;
   name: string;
+  lastName: string;
   email: string;
   present?: boolean; // Propiedad para indicar asistencia
 }
