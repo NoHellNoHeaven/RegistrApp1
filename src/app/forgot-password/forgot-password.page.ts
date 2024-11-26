@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 interface User {
   name: string;
@@ -27,7 +28,8 @@ export class ForgotPasswordPage {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private router: Router
   ) {
     this.resetForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -87,5 +89,8 @@ export class ForgotPasswordPage {
       }
     }
     this.message = 'Código de verificación incorrecto';
+  }
+  goHome() {
+    this.router.navigate(['/home']);
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro-asistencia',
@@ -8,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 export class RegistroAsistenciaPage implements OnInit {
   presentCount: number = 0;
   maxStudents: number = 25;
-
+  constructor(private router: Router){
+    
+  }
   ngOnInit() {
     this.loadPresentCount();
   }
@@ -22,5 +25,8 @@ export class RegistroAsistenciaPage implements OnInit {
 
   getAttendancePercentage(): number {
     return (this.presentCount / this.maxStudents) * 100;
+  
+  } goBack() {
+    this.router.navigate(['/profesor']);
   }
 }

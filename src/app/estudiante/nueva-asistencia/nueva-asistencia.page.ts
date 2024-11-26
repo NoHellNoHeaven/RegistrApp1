@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint } from '@capacitor/barcode-scanner';
 import { LoadingController, ToastController } from '@ionic/angular';
 
@@ -11,7 +12,7 @@ export class NuevaAsistenciaPage {
   presentCount: number = 0; // Contador de alumnos presentes
   message: string = '';
 
-  constructor(private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+  constructor(private loadingCtrl: LoadingController, private toastCtrl: ToastController, private router: Router) {
     this.checkResetCondition();
   }
 
@@ -71,5 +72,8 @@ export class NuevaAsistenciaPage {
       cssClass: 'rounded-toast'
     });
     await toast.present();
+  }
+  goBack() {
+    this.router.navigate(['/estudiante']);
   }
 }

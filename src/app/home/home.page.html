@@ -1,12 +1,11 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>RegistrAPP</ion-title>
-  </ion-toolbar>
+
 </ion-header>
 
 <ion-content class="ion-padding">
   <div class="login-container">
-    <h1 class="text-center">Inicia sesión en tu cuenta</h1>
+    <img src="assets/images/escaneo-qr.gif" alt="">
+    <h1 class="text-center">Inicia sesión</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
       <ion-item>
         <ion-label position="floating">Correo electrónico</ion-label>
@@ -22,8 +21,8 @@
       {{ error }}
     </div>
     <div class="links">
-      <ion-router-link routerLink="/registrarse">Registrarse</ion-router-link>
-      <ion-router-link routerLink="/forgot-password">¿Olvidaste tu contraseña?</ion-router-link>
+       <ion-router-link routerLink="/registrarse">Registrarse</ion-router-link>
+        <ion-router-link routerLink="/forgot-password">¿Olvidaste tu contraseña?</ion-router-link>
     </div>
   </div>
 </ion-content>
