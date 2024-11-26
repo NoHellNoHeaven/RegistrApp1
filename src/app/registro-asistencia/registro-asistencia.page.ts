@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 
-interface User {
-  id: string;
-  name: string;
-  lastName: string;
-  email: string;
-  role: 'student' | 'teacher';
-  present?: boolean; // Propiedad para indicar asistencia
-}
-
 @Component({
   selector: 'app-registro-asistencia',
   templateUrl: './registro-asistencia.page.html',
   styleUrls: ['./registro-asistencia.page.scss'],
 })
 export class RegistroAsistenciaPage implements OnInit {
-  users: User[] = [];
+  presentCount: number = 0;
+  maxStudents: number = 25;
 
   ngOnInit() {
-    this.loadUsers();
+    this.loadPresentCount();
   }
 
-  loadUsers() {
-    this.users = JSON.parse(localStorage.getItem('users') || '[]').filter((u: User) => u.role === 'student');
+  loadPresentCount() {
+    const count = localStorage.getItem('presentCount');
+    if (count) {
+      this.presentCount = parseInt(count, 10);
+    }
+  }
+
+  getAttendancePercentage(): number {
+    return (this.presentCount / this.maxStudents) * 100;
   }
 }
