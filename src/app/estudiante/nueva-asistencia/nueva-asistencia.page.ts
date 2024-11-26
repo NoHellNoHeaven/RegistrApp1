@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint } from '@capacitor/barcode-scanner';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 interface Student {
   id: string;
@@ -16,11 +16,10 @@ interface Student {
   styleUrls: ['./nueva-asistencia.page.scss'],
 })
 export class NuevaAsistenciaPage {
-  students: Student[] = JSON.parse(localStorage.getItem('students') || '[]'); // Cargar estudiantes del local storage
+  student: Student[] = JSON.parse(localStorage.getItem('students') || '[]'); // Cargar estudiantes del local storage
   message: string = '';
-  toast: any;
 
-  constructor(private loadingCtrl: LoadingController) {}
+  constructor(private loadingCtrl: LoadingController, private toastCtrl: ToastController) {}
 
   async scan() {
     const result = await CapacitorBarcodeScanner.scanBarcode({hint: CapacitorBarcodeScannerTypeHint.ALL});
@@ -43,10 +42,10 @@ export class NuevaAsistenciaPage {
     }
 
     const studentId = qrCode.replace('BaseDeDatos', '');
-    const student = this.students.find(s => s.id === studentId);
+    const student = this.student.find(s => s.id === studentId);
     if (student) {
       student.present = true;
-      localStorage.setItem('students', JSON.stringify(this.students)); // Actualizar la lista de estudiantes en el local storage
+      localStorage.setItem('students', JSON.stringify(this.student)); // Actualizar la lista de estudiantes en el local storage
       this.message = `Asistencia registrada para: ${student.name} ${student.lastName}`;
       this.showToast(this.message);
     } else {
@@ -58,7 +57,7 @@ export class NuevaAsistenciaPage {
   }
 
   async showToast(texto: string) {
-    const toast = await this.toast.create({
+    const toast = await this.toastCtrl.create({
       message: texto,
       duration: 3000,
       position: 'bottom',

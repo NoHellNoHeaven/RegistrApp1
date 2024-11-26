@@ -14,13 +14,13 @@ interface Student {
   styleUrls: ['./registro-asistencia.page.scss'],
 })
 export class RegistroAsistenciaPage implements OnInit {
-  students: Student[] = [];
+  student: Student[] = [];
 
   ngOnInit() {
     this.loadStudents();
   }
 
   loadStudents() {
-    this.students = JSON.parse(localStorage.getItem('students') || '[]');
+    this.student = JSON.parse(localStorage.getItem('students') || '[]');
   }
 }
