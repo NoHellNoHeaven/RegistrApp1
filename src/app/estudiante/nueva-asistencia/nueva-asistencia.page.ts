@@ -7,6 +7,7 @@ interface User {
   name: string;
   lastName: string;
   email: string;
+  role: 'student' | 'teacher';
   present?: boolean; // Nueva propiedad para indicar asistencia
 }
 
@@ -18,6 +19,7 @@ interface User {
 export class NuevaAsistenciaPage {
   users: User[] = JSON.parse(localStorage.getItem('users') || '[]'); // Cargar usuarios del local storage
   message: string = '';
+  loggedUser: User | null = JSON.parse(localStorage.getItem('currentUser') || 'null'); // Obtener usuario logueado
 
   constructor(private loadingCtrl: LoadingController, private toastCtrl: ToastController) {}
 
@@ -42,11 +44,14 @@ export class NuevaAsistenciaPage {
     }
 
     const userId = qrCode.replace('BaseDeDatos', '');
-    const user = this.users.find(u => u.id === userId);
-    if (user) {
+    const user = this.users.find(u => u.id === userId && u.role === 'student');
+    if (user && this.loggedUser && this.loggedUser.id === userId) {
       user.present = true;
       localStorage.setItem('users', JSON.stringify(this.users)); // Actualizar la lista de usuarios en el local storage
       this.message = `Asistencia registrada para: ${user.name} ${user.lastName}`;
+      this.showToast(this.message);
+    } else if (user) {
+      this.message = `El usuario ${user.name} ${user.lastName} no está logueado o no tiene el rol de estudiante.`;
       this.showToast(this.message);
     } else {
       this.message = 'Código QR no válido';

@@ -5,6 +5,7 @@ interface User {
   name: string;
   lastName: string;
   email: string;
+  role: 'student' | 'teacher';
   present?: boolean; // Propiedad para indicar asistencia
 }
 
@@ -21,6 +22,6 @@ export class RegistroAsistenciaPage implements OnInit {
   }
 
   loadUsers() {
-    this.users = JSON.parse(localStorage.getItem('users') || '[]');
+    this.users = JSON.parse(localStorage.getItem('users') || '[]').filter((u: User) => u.role === 'student');
   }
 }
