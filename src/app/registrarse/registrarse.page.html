@@ -33,22 +33,50 @@
       </ion-item>
       <div *ngIf="registrarseForm.get('role')?.value === 'teacher'">
         <ion-item>
-          <ion-label position="floating">Curso</ion-label>
-          <ion-input formControlName="course"></ion-input>
+          <ion-label position="floating">Escuela</ion-label>
+          <ion-select formControlName="school" (ionChange)="onSchoolChange($event)">
+            <ion-select-option value="informatica">Escuela de Informática</ion-select-option>
+            <ion-select-option value="negocios">Escuela de Negocios</ion-select-option>
+            <ion-select-option value="salud">Escuela de Salud</ion-select-option>
+            <!-- Agrega aquí más opciones de escuelas según sea necesario -->
+          </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label position="floating">Escuela</ion-label>
-          <ion-input formControlName="school"></ion-input>
+          <ion-label position="floating">Ramo</ion-label>
+          <ion-select formControlName="course">
+            <ion-select-option *ngFor="let ramo of ramos" [value]="ramo">{{ ramo }}</ion-select-option>
+          </ion-select>
         </ion-item>
       </div>
       <div *ngIf="registrarseForm.get('role')?.value === 'student'">
         <ion-item>
-          <ion-label position="floating">Carrer</ion-label>
-          <ion-input formControlName="carrer"></ion-input>
+          <ion-label position="floating">Carrera</ion-label>
+          <ion-select formControlName="carrer">
+            <ion-select-option value="ingenieria">Ingeniería</ion-select-option>
+            <ion-select-option value="medicina">Medicina</ion-select-option>
+            <ion-select-option value="derecho">Derecho</ion-select-option>
+            <ion-select-option value="administracion">Administración de Empresas</ion-select-option>
+            <ion-select-option value="educacion">Educación</ion-select-option>
+            <ion-select-option value="artes">Artes</ion-select-option>
+            <ion-select-option value="ciencias">Ciencias</ion-select-option>
+            <ion-select-option value="ti">Tecnologías de la Información</ion-select-option>
+            <!-- Agrega aquí más opciones de carreras según sea necesario -->
+          </ion-select>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Sede</ion-label>
-          <ion-input formControlName="sede"></ion-input>
+          <ion-select formControlName="sede">
+            <ion-select-option value="alameda">Alameda</ion-select-option>
+            <ion-select-option value="antonio_varas">Antonio Varas</ion-select-option>
+            <ion-select-option value="concepcion">Concepción</ion-select-option>
+            <ion-select-option value="macul">Macul</ion-select-option>
+            <ion-select-option value="maipu">Maipú</ion-select-option>
+            <ion-select-option value="melipilla">Melipilla</ion-select-option>
+            <ion-select-option value="plaza_vespucio">Plaza Vespucio</ion-select-option>
+            <ion-select-option value="san_bernardo">San Bernardo</ion-select-option>
+            <ion-select-option value="vina_del_mar">Viña del Mar</ion-select-option>
+            <!-- Agrega aquí más opciones de sedes de DuocUC según sea necesario -->
+          </ion-select>
         </ion-item>
       </div>
       <ion-button expand="full" type="submit" [disabled]="!registrarseForm.valid">Registrarse</ion-button>

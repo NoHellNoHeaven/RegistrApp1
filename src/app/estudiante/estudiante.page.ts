@@ -27,7 +27,7 @@ export class EstudiantePage implements OnInit {
 
   ngOnInit() {
     this.loadUserData();
-    this.loadMockAttendances();
+    this.loadAttendances();
   }
 
   loadUserData() {
@@ -38,20 +38,16 @@ export class EstudiantePage implements OnInit {
     }
   }
 
-  loadMockAttendances() {
-    // Simular datos de asistencia
-    const mockAttendances: Attendance[] = [
-      // { date: '2023-05-01', course: 'Matemáticas', status: 'Presente' },
-      // { date: '2023-05-02', course: 'Historia', status: 'Ausente' },
-      // { date: '2023-05-03', course: 'Ciencias', status: 'Presente' },
-      // { date: '2023-05-04', course: 'Literatura', status: 'Presente' },
-      // { date: '2023-05-05', course: 'Educación Física', status: 'Presente' },
-    ];
-    this.attendances = mockAttendances;
+  loadAttendances() {
+    // Cargar las asistencias del localStorage
+    const storedAttendances = localStorage.getItem('attendances');
+    if (storedAttendances) {
+      this.attendances = JSON.parse(storedAttendances);
+    }
   }
 
   goToNuevaAsistencia() {
-    this.router.navigate(['/estudiante/nueva-asistencia']);
+    this.router.navigate(['./nueva-asistencia']);
   }
 
   logout() {

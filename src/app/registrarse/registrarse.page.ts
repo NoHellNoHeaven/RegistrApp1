@@ -23,6 +23,7 @@ export class RegistrarsePage {
   registrarseForm: FormGroup;
   message: string = '';
   isSuccess: boolean = false;
+  ramos: string[] = [];
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.registrarseForm = this.fb.group({
@@ -62,10 +63,23 @@ export class RegistrarsePage {
     });
   }
 
+  onSchoolChange(event: any) {
+    const school = event.detail.value;
+    if (school === 'informatica') {
+      this.ramos = ['Programación', 'Bases de Datos', 'Redes', 'Seguridad Informática'];
+    } else if (school === 'negocios') {
+      this.ramos = ['Contabilidad', 'Marketing', 'Gestión Financiera', 'Administración'];
+    } else if (school === 'salud') {
+      this.ramos = ['Anatomía', 'Enfermería', 'Fisiología', 'Farmacología'];
+    } else {
+      this.ramos = [];
+    }
+  }
+
   onSubmit() {
     if (this.registrarseForm.valid) {
       const { name, lastName, email, password, role, course, school, carrer, sede } = this.registrarseForm.value;
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
       if (users.some((u: User) => u.email === email)) {
         this.message = 'Este correo electrónico ya está registrado';
         this.isSuccess = false;
@@ -82,9 +96,6 @@ export class RegistrarsePage {
       }, 2000);
     }
   }
-
-
-
 
   goHome() {
     this.router.navigate(['/home']);

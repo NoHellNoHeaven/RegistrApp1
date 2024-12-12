@@ -1,16 +1,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Nueva Asistencia</ion-title>
-    <ion-icon class="icon" name="arrow-back" (click)="goBack()"></ion-icon>
+    <ion-icon name="arrow-back" (click)=" goBack()"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div class="nueva-asistencia">
-    <h1 class="text-center">Registrar Asistencia</h1>
-    <ion-button expand="full" (click)="scan()">Leer QR</ion-button>
-    <div *ngIf="message" class="message">
-      {{ message }}
-    </div>
+  <div class="flex justify-center">
+    <ion-button expand="full" (click)="scan()">Escanear QR</ion-button>
+  </div>
+  <div *ngIf="message" class="flex justify-center">
+    <p>{{ message }}</p>
   </div>
 </ion-content>

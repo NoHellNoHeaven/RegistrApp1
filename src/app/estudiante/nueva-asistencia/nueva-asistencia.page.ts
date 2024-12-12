@@ -3,6 +3,12 @@ import { Router } from '@angular/router';
 import { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint } from '@capacitor/barcode-scanner';
 import { LoadingController, ToastController } from '@ionic/angular';
 
+interface Attendance {
+  date: string;
+  course: string;
+  status: 'Presente';
+}
+
 @Component({
   selector: 'app-nueva-asistencia',
   templateUrl: './nueva-asistencia.page.html',
@@ -39,7 +45,7 @@ export class NuevaAsistenciaPage {
   }
 
   async scan() {
-    const result = await CapacitorBarcodeScanner.scanBarcode({hint: CapacitorBarcodeScannerTypeHint.ALL});
+    const result = await CapacitorBarcodeScanner.scanBarcode({ hint: CapacitorBarcodeScannerTypeHint.ALL });
     if (result) {
       this.onQrCodeScanned(result.ScanResult);
     }
@@ -47,17 +53,36 @@ export class NuevaAsistenciaPage {
 
   async onQrCodeScanned(qrCode: string) {
     const loading = await this.loadingCtrl.create({
-      message: 'Registrando asistencia...'
+      message: 'Registrando asistencia...',
     });
     loading.present();
 
-    if (qrCode.startsWith('BaseDeDatos')) {
+    const currentDate = new Date().toLocaleDateString();
+    const storedUsers = localStorage.getItem('users');
+    const users = storedUsers ? JSON.parse(storedUsers) : [];
+
+    const user = users.find((u: any) => u.email === qrCode);
+
+    if (user) {
+      const attendance: Attendance = {
+        date: currentDate,
+        course: user.course || 'Curso no especificado',
+        status: 'Presente',
+      };
+
+      let storedAttendances = localStorage.getItem('attendances');
+      let attendances = storedAttendances ? JSON.parse(storedAttendances) : [];
+
+      attendances.push(attendance); // Agregar la nueva asistencia
+      localStorage.setItem('attendances', JSON.stringify(attendances)); // Guardar la lista actualizada en el local storage
+
       this.presentCount++; // Incrementar el contador de alumnos presentes
       localStorage.setItem('presentCount', this.presentCount.toString()); // Guardar el contador en el local storage
-      this.message = `Asistencia registrada. Alumnos presentes: ${this.presentCount}`;
+
+      this.message = `Asistencia registrada para ${user.name} ${user.lastName}. Alumnos presentes: ${this.presentCount}`;
       this.showToast(this.message);
     } else {
-      this.message = 'Código QR no válido';
+      this.message = 'Código QR no válido o usuario no encontrado';
       this.showToast(this.message);
     }
 
@@ -69,10 +94,11 @@ export class NuevaAsistenciaPage {
       message: texto,
       duration: 3000,
       position: 'bottom',
-      cssClass: 'rounded-toast'
+      cssClass: 'rounded-toast',
     });
     await toast.present();
   }
+
   goBack() {
     this.router.navigate(['/estudiante']);
   }
