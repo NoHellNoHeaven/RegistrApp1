@@ -44,11 +44,12 @@ export class NuevaAsistenciaPage {
     }
   }
 
-  async scan() {
-    const result = await CapacitorBarcodeScanner.scanBarcode({ hint: CapacitorBarcodeScannerTypeHint.ALL });
-    if (result) {
-      this.onQrCodeScanned(result.ScanResult);
-    }
+  async scan(){
+    CapacitorBarcodeScanner.scanBarcode({hint: CapacitorBarcodeScannerTypeHint.ALL})
+    .then((data)=>{
+      this.showToast(data.ScanResult)
+    
+    })
   }
 
   async onQrCodeScanned(qrCode: string) {
