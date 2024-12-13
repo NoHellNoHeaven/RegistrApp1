@@ -55,19 +55,14 @@ export class NuevaAsistenciaPage {
       });
 
       if (data?.ScanResult) {
-        // Pasar el resultado del QR para registrar asistencia
         const qrCode = data.ScanResult;
 
-        const currentDate = new Date().toLocaleDateString();
-        const storedUsers = localStorage.getItem('users');
-        const users = storedUsers ? JSON.parse(storedUsers) : [];
+        if (qrCode === 'BaseDeDatos') {
+          const currentDate = new Date().toLocaleDateString();
 
-        const user = users.find((u: any) => u.email === qrCode);
-
-        if (user) {
           const attendance: Attendance = {
             date: currentDate,
-            course: user.course || 'Curso no especificado',
+            course: 'Curso General',
             status: 'Presente',
           };
 
@@ -80,11 +75,10 @@ export class NuevaAsistenciaPage {
           this.presentCount++; // Incrementar el contador de alumnos presentes
           localStorage.setItem('presentCount', this.presentCount.toString()); // Guardar el contador en el local storage
 
-          const message = `Asistencia registrada para ${user.name} ${user.lastName}. Alumnos presentes: ${this.presentCount}`;
+          const message = `Asistencia registrada. Alumnos presentes: ${this.presentCount}`;
           this.showToast(message);
         } else {
-          const message = 'Código QR no válido o usuario no encontrado';
-          this.showToast(message);
+          this.showToast('Código QR no válido.');
         }
       } else {
         this.showToast('No se escaneó ningún código QR.');
