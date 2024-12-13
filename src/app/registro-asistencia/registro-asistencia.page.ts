@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+
+interface Attendance {
+  date: string;
+  course: string;
+  status: 'Presente' | 'Ausente';
+  student: {
+    name: string;
+    email: string;
+  };
+}
 
 @Component({
   selector: 'app-registro-asistencia',
@@ -7,26 +16,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./registro-asistencia.page.scss'],
 })
 export class RegistroAsistenciaPage implements OnInit {
-  presentCount: number = 0;
-  maxStudents: number = 25;
-  constructor(private router: Router){
-    
-  }
+  attendances: Attendance[] = [];
+
+  constructor() {}
+
   ngOnInit() {
-    this.loadPresentCount();
+    this.loadAttendances();
   }
 
-  loadPresentCount() {
-    const count = localStorage.getItem('presentCount');
-    if (count) {
-      this.presentCount = parseInt(count, 10);
-    }
-  }
-
-  getAttendancePercentage(): number {
-    return (this.presentCount / this.maxStudents) * 100;
-  
-  } goBack() {
-    this.router.navigate(['/profesor']);
+  loadAttendances() {
+    const storedAttendances = localStorage.getItem('attendances');
+    this.attendances = storedAttendances ? JSON.parse(storedAttendances) : [];
   }
 }

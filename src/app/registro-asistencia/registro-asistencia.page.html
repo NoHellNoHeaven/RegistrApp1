@@ -1,14 +1,35 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Registro de Asistencia</ion-title>
-    <ion-icon class="icon" name="arrow-back" (click)="goBack()"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <div class="attendance-container">
-    <h1 class="text-center">Asistencia</h1>
-    <ion-progress-bar [value]="getAttendancePercentage() / 100" color="success"></ion-progress-bar>
-    <p class="text-center">Alumnos presentes: {{ presentCount }} / {{ maxStudents }}</p>
-  </div>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Asistencias Registradas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>Fecha</ion-col>
+          <ion-col>Curso</ion-col>
+          <ion-col>Alumno</ion-col>
+          <ion-col>Email</ion-col>
+          <ion-col>Estado</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let attendance of attendances">
+          <ion-col>{{ attendance.date }}</ion-col>
+          <ion-col>{{ attendance.course }}</ion-col>
+          <ion-col>{{ attendance.student.name }}</ion-col>
+          <ion-col>{{ attendance.student.email }}</ion-col>
+          <ion-col>
+            <ion-badge [color]="attendance.status === 'Presente' ? 'success' : 'danger'">
+              {{ attendance.status }}
+            </ion-badge>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
