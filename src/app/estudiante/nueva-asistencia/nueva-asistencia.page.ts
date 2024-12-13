@@ -6,7 +6,7 @@ import { LoadingController, ToastController } from '@ionic/angular';
 interface Attendance {
   date: string;
   course: string;
-  status: 'Presente';
+  status: 'Presente' | 'Ausente';
 }
 
 @Component({
@@ -18,7 +18,11 @@ export class NuevaAsistenciaPage {
   presentCount: number = 0; // Contador de alumnos presentes
   message: string = '';
 
-  constructor(private loadingCtrl: LoadingController, private toastCtrl: ToastController, private router: Router) {
+  constructor(
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
+    private router: Router
+  ) {
     this.checkResetCondition();
   }
 
@@ -45,48 +49,50 @@ export class NuevaAsistenciaPage {
   }
 
   async scan() {
-    const result = await CapacitorBarcodeScanner.scanBarcode({ hint: CapacitorBarcodeScannerTypeHint.ALL });
-    if (result) {
-      this.onQrCodeScanned(result.ScanResult);
+    try {
+      const data = await CapacitorBarcodeScanner.scanBarcode({
+        hint: CapacitorBarcodeScannerTypeHint.ALL,
+      });
+
+      if (data?.ScanResult) {
+        // Pasar el resultado del QR para registrar asistencia
+        const qrCode = data.ScanResult;
+
+        const currentDate = new Date().toLocaleDateString();
+        const storedUsers = localStorage.getItem('users');
+        const users = storedUsers ? JSON.parse(storedUsers) : [];
+
+        const user = users.find((u: any) => u.email === qrCode);
+
+        if (user) {
+          const attendance: Attendance = {
+            date: currentDate,
+            course: user.course || 'Curso no especificado',
+            status: 'Presente',
+          };
+
+          let storedAttendances = localStorage.getItem('attendances');
+          let attendances = storedAttendances ? JSON.parse(storedAttendances) : [];
+
+          attendances.push(attendance); // Agregar la nueva asistencia
+          localStorage.setItem('attendances', JSON.stringify(attendances)); // Guardar la lista actualizada en el local storage
+
+          this.presentCount++; // Incrementar el contador de alumnos presentes
+          localStorage.setItem('presentCount', this.presentCount.toString()); // Guardar el contador en el local storage
+
+          const message = `Asistencia registrada para ${user.name} ${user.lastName}. Alumnos presentes: ${this.presentCount}`;
+          this.showToast(message);
+        } else {
+          const message = 'Código QR no válido o usuario no encontrado';
+          this.showToast(message);
+        }
+      } else {
+        this.showToast('No se escaneó ningún código QR.');
+      }
+    } catch (error) {
+      console.error('Error durante el escaneo:', error);
+      this.showToast('Error al escanear el código QR.');
     }
-  }
-
-  async onQrCodeScanned(qrCode: string) {
-    const loading = await this.loadingCtrl.create({
-      message: 'Registrando asistencia...',
-    });
-    loading.present();
-
-    const currentDate = new Date().toLocaleDateString();
-    const storedUsers = localStorage.getItem('users');
-    const users = storedUsers ? JSON.parse(storedUsers) : [];
-
-    const user = users.find((u: any) => u.email === qrCode);
-
-    if (user) {
-      const attendance: Attendance = {
-        date: currentDate,
-        course: user.course || 'Curso no especificado',
-        status: 'Presente',
-      };
-
-      let storedAttendances = localStorage.getItem('attendances');
-      let attendances = storedAttendances ? JSON.parse(storedAttendances) : [];
-
-      attendances.push(attendance); // Agregar la nueva asistencia
-      localStorage.setItem('attendances', JSON.stringify(attendances)); // Guardar la lista actualizada en el local storage
-
-      this.presentCount++; // Incrementar el contador de alumnos presentes
-      localStorage.setItem('presentCount', this.presentCount.toString()); // Guardar el contador en el local storage
-
-      this.message = `Asistencia registrada para ${user.name} ${user.lastName}. Alumnos presentes: ${this.presentCount}`;
-      this.showToast(this.message);
-    } else {
-      this.message = 'Código QR no válido o usuario no encontrado';
-      this.showToast(this.message);
-    }
-
-    loading.dismiss();
   }
 
   async showToast(texto: string) {
