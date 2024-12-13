@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface Attendance {
   date: string;
@@ -18,7 +19,7 @@ interface Attendance {
 export class RegistroAsistenciaPage implements OnInit {
   attendances: Attendance[] = [];
 
-  constructor() {}
+  constructor( private router: Router) {}
 
   ngOnInit() {
     this.loadAttendances();
@@ -27,5 +28,9 @@ export class RegistroAsistenciaPage implements OnInit {
   loadAttendances() {
     const storedAttendances = localStorage.getItem('attendances');
     this.attendances = storedAttendances ? JSON.parse(storedAttendances) : [];
+  }
+  
+  goBack() {
+    this.router.navigate(['/profesor']);
   }
 }
