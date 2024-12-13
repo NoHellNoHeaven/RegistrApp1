@@ -65,22 +65,26 @@ export class NuevaAsistenciaPage {
     });
     await loading.present();
 
+    // Supongamos que "BaseDeDatos" contiene información válida
     if (qrCode === 'BaseDeDatos') {
-      const currentDate = new Date().toLocaleDateString();
+      const currentUser = localStorage.getItem('currentUser');
+      const student = currentUser
+        ? JSON.parse(currentUser)
+        : { name: 'Desconocido', email: 'N/A' };
 
       const attendance: Attendance = {
-        date: currentDate,
-        course: 'Curso General',
+        date: new Date().toLocaleDateString(),
+        course: 'Curso General', // Ajusta según tu lógica de cursos
         status: 'Presente',
         student: {
-          name: 'Juan Pérez', // Simulado. Podrías obtenerlo dinámicamente
-          email: 'juan.perez@example.com',
+          name: student.name,
+          email: student.email,
         },
       };
 
+      // Guardar la asistencia en localStorage
       let storedAttendances = localStorage.getItem('attendances');
       let attendances = storedAttendances ? JSON.parse(storedAttendances) : [];
-
       attendances.push(attendance);
       localStorage.setItem('attendances', JSON.stringify(attendances));
 
@@ -90,8 +94,8 @@ export class NuevaAsistenciaPage {
       this.message = `Asistencia registrada. Alumnos presentes: ${this.presentCount}`;
       await this.showToast(this.message);
 
-      // Navegar a la página de registro de asistencias
-      this.router.navigate(['/registro-asistencia']);
+      // Navegar de regreso al perfil del estudiante
+      this.router.navigate(['/estudiante']);
     } else {
       this.message = 'Código QR no válido';
       await this.showToast(this.message);
